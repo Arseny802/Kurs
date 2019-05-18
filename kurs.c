@@ -55,15 +55,15 @@ inline void printRecord(const structRecord rec){
 
 inline void printBase(){
 	if(numberOfRecordsInBase > 1) 
-		printf("There are %d records in fail: \n", numberOfRecordsInBase);
+		printf("There are %d records in File: \n", numberOfRecordsInBase);
 	else if (numberOfRecordsInBase == 1)
-		printf("There is 1 record in fail: \n");
-	else printf("There is no records in fail.\n");
+		printf("There is 1 record in File: \n");
+	else printf("There is no records in File.\n");
 	for(unsigned char i=0; i<numberOfRecordsInBase; ++i) {
 		printf("\t %d - ", i+1); printRecord(Base[i]);}
 }
 
-unsigned char loadBase(char *nameOfFail){
+unsigned char loadBase(char *nameOfFile){
 	unsigned char y=0, k=0;
 	char *buffer1 = NULL, *buffer2 = NULL;
 	size_t m;
@@ -104,12 +104,12 @@ unsigned char loadBase(char *nameOfFail){
 		}
 	}
 	fclose(openedFileStream);
-	openedFileStream = fopen(nameOfFail, "r+b");
+	openedFileStream = fopen(nameOfFile, "r+b");
 	
 	return 1;
 }
 
-inline void saveFail(unsigned char number){
+inline void saveFile(unsigned char number){
 	short count;
 	while ( (count=getc(openedFileStream)) != EOF) continue;
 	fprintf(openedFileStream, Base[number].numberOfContract);
@@ -129,21 +129,21 @@ inline void saveFail(unsigned char number){
 inline void showMenu(){
 	printf("Menu: \n");
 	printf("\t0 - Exit;\n");
-	printf("\t1 - Make new fail;\n");
-	printf("\t2 - Open fail;\n");
-	printf("\t3 - Show fail;\n");
-	printf("\t4 - Edit name of fail;\n");
-	printf("\t5 - Delete fail;\n");
-	printf("\t6 - Make record in fail;\n");
-	printf("\t7 - Edit record in fail;\n");
-	printf("\t8 - Delete record in fail;\n");
-	printf("\t9 - Sort fail;\n");
-	printf("\t10 - Search record in fail.\n");
-	printf("\t11 - Print records in fail.\n");
+	printf("\t1 - Make new File;\n");
+	printf("\t2 - Open File;\n");
+	printf("\t3 - Show File;\n");
+	printf("\t4 - Edit name of File;\n");
+	printf("\t5 - Delete File;\n");
+	printf("\t6 - Make record in File;\n");
+	printf("\t7 - Edit record in File;\n");
+	printf("\t8 - Delete record in File;\n");
+	printf("\t9 - Sort File;\n");
+	printf("\t10 - Search record in File.\n");
+	printf("\t11 - Print records in File.\n");
 	printf("Your choice is: ");
 }
 
-char* choosingFail(char *str){
+char* choosingFile(char *str){
 	if (numberOfFiles == 0) return NULL;
 	else {
 		int numberOfFile;
@@ -157,10 +157,10 @@ char* choosingFail(char *str){
 	}
 }
 
-void makeFail(){	
+void makeFile(){	
 	char *name = NULL;
 	name = (char*)malloc(100*sizeof(char));
-	printf("Enter the fail name: ");
+	printf("Enter the File name: ");
 	if(scanf("%s", name) == 0)
 		printf("Mistake with reading name!\n");
 	strncat(name, ".txt", 4);
@@ -175,7 +175,7 @@ void makeFail(){
 	free(name); 
 }
 
-unsigned char openFail(){
+unsigned char openFile(){
 	if(fileOpened == 1){
 		fclose(openedFileStream);
 		deleteBase();
@@ -183,7 +183,7 @@ unsigned char openFail(){
 		nameOfOpenedFile = NULL;
 		fileOpened = 0;
 	}
-	char *name = choosingFail("What file do you want to open?\n");
+	char *name = choosingFile("What file do you want to open?\n");
 	if (name == NULL) {
 		printf("You have no files to open.\n");
 		free(name);
@@ -203,8 +203,8 @@ unsigned char openFail(){
 	}
 }
 
-void showFail(){
-	char *name = choosingFail("What file do you want to see?\n");
+void showFile(){
+	char *name = choosingFile("What file do you want to see?\n");
 	if (name == NULL) printf("You have no files to see.\n");
 	else {
 		char *text = NULL;
@@ -228,13 +228,13 @@ void showFail(){
 	free(name);
 }
 
-void editNameOfFail(){
-	char *oldName = choosingFail("What file do you want to rename?\n");
+void editNameOfFile(){
+	char *oldName = choosingFile("What file do you want to rename?\n");
 	if (oldName == NULL) printf("You have no files to rename.\n");
 	else {
 		char *newName;
 		newName = (char*)malloc(100*sizeof(char));
-		printf("Enter a new name of fail: ");
+		printf("Enter a new name of File: ");
 		if(scanf("%s", newName) == 0)
 			printf("Mistake with reading new name!\n");
 		strncat(newName, ".txt", 4);
@@ -249,11 +249,11 @@ void editNameOfFail(){
 	free(oldName);
 }
 
-void deleteFail(){
-	char *name = choosingFail("What file do you want to delete?\n"); 
+void deleteFile(){
+	char *name = choosingFile("What file do you want to delete?\n"); 
 	if ( name == NULL) printf("You have no files to delete.\n");
 	else {
-		if (remove(name) == -1) printf ("Deleting fail failed.\n");
+		if (remove(name) == -1) printf ("Deleting File Fileed.\n");
 		else {
 			printf ("Succes! ");
 			for(unsigned char i=0; i<numberOfFiles; ++i)
@@ -314,7 +314,7 @@ inline void createRecord(unsigned char number){
 	Base[number].lease[strlen(buffer)] = '\0';
 }
 
-void makeRecordInFail(){
+void makeRecordInFile(){
 	if(fileOpened == 1){
 		char buffer[40];
 		short count=0;
@@ -325,14 +325,14 @@ void makeRecordInFail(){
 		createRecord(numberOfRecordsInBase);
 		++numberOfRecordsInBase;
 		
-		saveFail(numberOfRecordsInBase-1);
+		saveFile(numberOfRecordsInBase-1);
 		
 		printRecord(Base[numberOfRecordsInBase-1]);
 		printf("New record was made.\n");
 	} else printf("Open someone file at first!\n");
 }
 
-void editRecordInFail(){
+void editRecordInFile(){
 	short unsigned int choose=0;
 	
 	printf("What record do you want to edit: \n");
@@ -346,12 +346,12 @@ void editRecordInFail(){
 	openedFileStream = fopen(nameOfOpenedFile, "w");
 	fclose(openedFileStream);
 	openedFileStream = fopen(nameOfOpenedFile, "r+b");
-	for (unsigned char i=0; i<numberOfFiles; ++i) saveFail(i);
+	for (unsigned char i=0; i<numberOfFiles; ++i) saveFile(i);
 	
 	printf("Record was changed.\n");
 }
 
-void deleteRecordInFail(){
+void deleteRecordInFile(){
 	short unsigned int choose=0;
 	
 	printf("What record do you want to delete: \n");
@@ -378,14 +378,14 @@ void deleteRecordInFail(){
 	openedFileStream = fopen(nameOfOpenedFile, "w");
 	fclose(openedFileStream);
 	openedFileStream = fopen(nameOfOpenedFile, "r+b");
-	for (unsigned char i=0; i<numberOfFiles; ++i) saveFail(i);
+	for (unsigned char i=0; i<numberOfFiles; ++i) saveFile(i);
 	
 	printf("Record was deleted!\n");
 }
 
 inline short unsigned int chooseTagRecord(char* str){
 	short unsigned int answer=0;
-	printf("By what character do you want to %s records in fail: \n", str);
+	printf("By what character do you want to %s records in File: \n", str);
 	printf("\t 1 - by number of contract;\n");
 	printf("\t 2 - by client's name;\n");
 	printf("\t 3 - by place of registration;\n");
@@ -417,7 +417,7 @@ int CMP_5 (const structRecord *point1, const structRecord *point2){
 int CMP_6 (const structRecord *point1, const structRecord *point2){
 	return strcmp (point1->lease, point2->lease);}
 
-unsigned char sortFail(){
+unsigned char sortFile(){
 	
 	if(fileOpened == 0){
 		printf("Open someone file at first!\n");
@@ -452,14 +452,14 @@ unsigned char sortFail(){
 	
 	fclose(openedFileStream);
 	openedFileStream = fopen(nameOfOpenedFile, "w");
-	for (unsigned char i=0; i<numberOfFiles; ++i) saveFail(i);
+	for (unsigned char i=0; i<numberOfFiles; ++i) saveFile(i);
 	fclose(openedFileStream);
 	openedFileStream = fopen(nameOfOpenedFile, "r+b");
 	
 	return 1;
 }
 
-unsigned char searchRecordInFail(){
+unsigned char searchRecordInFile(){
 	char strSearch[40];
 	structRecord target, *result;
 	
@@ -578,35 +578,35 @@ void main(int argc, char *argv[]) {
 				exit(0);
 				break;
 			case 1: 
-				makeFail();
+				makeFile();
 				break;
 			case 2: 
-				fileOpened = openFail();
+				fileOpened = openFile();
 				break;
 			case 3: 
-				showFail();
+				showFile();
 				break;
 			case 4: 
-				editNameOfFail();
+				editNameOfFile();
 				break;
 			case 5: 
-				deleteFail();
+				deleteFile();
 				break;
 			case 6: 
-				makeRecordInFail();
+				makeRecordInFile();
 				break;
 			case 7: 
-				editRecordInFail();
+				editRecordInFile();
 				break;
 			case 8: 
-				deleteRecordInFail();
+				deleteRecordInFile();
 				break;
 			case 9:
-				if(sortFail() == 1) printf("File was sorted!\n");
+				if(sortFile() == 1) printf("File was sorted!\n");
 					else printf("File was not sorted!\n");
 				break;
 			case 10:
-				if(searchRecordInFail() == 1) 
+				if(searchRecordInFile() == 1) 
 					printf("That's your record, isn't it?\n");
 				else {
 					printf("I can't find your record. ");
