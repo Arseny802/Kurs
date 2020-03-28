@@ -253,7 +253,7 @@ void deleteFile(){
 	char *name = choosingFile("What file do you want to delete?\n"); 
 	if ( name == NULL) printf("You have no files to delete.\n");
 	else {
-		if (remove(name) == -1) printf ("Deleting File Fileed.\n");
+		if (remove(name) == -1) printf ("Deleting file failed.\n");
 		else {
 			printf ("Succes! ");
 			for(unsigned char i=0; i<numberOfFiles; ++i)
